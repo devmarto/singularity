@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-.problema-nao-e-o-css {
-  background-color: blue;
-  padding: 40px;
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
 }
