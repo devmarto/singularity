@@ -1,6 +1,6 @@
 const ImageLinkForm = ({ inputChange, submitClick }) => {
   return (
-    <div className="container py-12">
+    <div className="container pt-12 pb-6">
       <p className='text-center'>
         {'This Magic Brain will detect faces in your pictures. Git it a try.'}
       </p>
