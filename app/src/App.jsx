@@ -16,7 +16,7 @@ function App() {
 
   const MODEL_ID = 'face-detection';
   const returnClarifaiRequestOptions = (imageUrl) => {
-    const PAT = '676f5924e1c94770bab612c61b3df703';
+    const PAT = import.meta.env.VITE_CLARIFAI_PAT;
     const USER_ID = 'clarifai';
     const APP_ID = 'main';
     const IMAGE_URL = imageUrl;
