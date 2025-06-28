@@ -1,8 +1,8 @@
 import face from './logo.png';
 
-const Logo = () => {
+const Logo = ({align}) => {
   return (
-    <img className='h-24' src = {face} alt="Logo" />
+    <img className={align} src = {face} alt="Logo" />
   )
 }
 
