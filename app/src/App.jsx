@@ -4,17 +4,17 @@ import Navigation from "./components/Navigation/Navigation"
 import Rank from "./components/Rank/Rank";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
-
-
-
+import SignIn from "./components/SignIn/SignIn";
+import { Routes, Route } from "react-router";
+import Register from "./components/Register/Register";
 
 
 function App() {
   const [url, setUrl] = useState('');
   const [image, setImage] = useState()
   const [boxes, setBoxes] = useState([]);
-
   const MODEL_ID = 'face-detection';
+
   const returnClarifaiRequestOptions = (imageUrl) => {
     const PAT = import.meta.env.VITE_CLARIFAI_PAT;
     const USER_ID = 'clarifai';
@@ -46,7 +46,7 @@ function App() {
       body: raw
     };
     return requestOptions;
-}
+  }
 
   function handleInput(e) {
     setUrl(e.target.value)
@@ -54,6 +54,7 @@ function App() {
 
   function calculateFaceLocation(data) {
     const regions = data.outputs[0].data.regions;
+
     if (regions.length > 0) {
       const imageUpload = document.getElementById('imageUpload');
       const imageWidth = imageUpload.offsetWidth;
@@ -77,8 +78,8 @@ function App() {
       setBoxes(faceBoxes);
     } else {
       setBoxes([]);
+    }
   }
-}
 
   function handleClick() {
     setImage(url)
@@ -92,12 +93,20 @@ function App() {
 
   return (
     <>
-      <Navigation />
-      <div className="flex flex-col justify-center items-center h-[80vh]">
-        <Rank />
-        <ImageLinkForm inputChange={handleInput} submitClick={handleClick}/>
-        <FaceRecognition boxes={boxes} image={image}/>
-      </div>
+      <Routes>
+        <Route path="/" element={
+          <>
+            <Navigation />
+            <div className="flex flex-col justify-center items-center">
+              <Rank />
+              <ImageLinkForm inputChange={handleInput} submitClick={handleClick}/>
+              <FaceRecognition boxes={boxes} image={image}/>
+            </div>
+          </>
+        } />
+        <Route path="/login" element={<SignIn />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </>
   )
 }
