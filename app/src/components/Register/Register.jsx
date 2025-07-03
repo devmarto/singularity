@@ -1,63 +1,26 @@
 import Logo from "../Logo/Logo";
 import { NavLink } from "react-router";
-import { useFormik } from "formik";
+import { Formik, Form, useField } from "formik";
+import * as Yup from 'yup';
 
- const validate = values => {
-  const errors = {};
-
-  if (!values.firstName) {
-    errors.firstName = 'First Name is required'
-  } else if (values.firstName.length > 15) {
-    errors.firstName = 'Must be 15 characters or less';
-  }
-
-  if (!values.lastName) {
-    errors.lastName = 'Last Name is required'
-  } else if (values.lastName.length > 20) {
-    errors.lastName = 'Must be 20 characters or less';
-  }
-
-  if (!values.email) {
-     errors.email = 'Email is required'
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
-  }
-
-  if (!values.password) {
-    errors.password = 'Password is required'
-  } else if (values.password < 8) {
-    errors.password = 'Must be 8 characters or more';
-  }
-
-  if (!values.confirmPassword) {
-    errors.confirmPassword = 'Confirm password is required'
-  } else if (values.confirmPassword !== values.password) {
-    errors.confirmPassword = `Passwords don't match`;
-  } else if (values.confirmPassword < 8) {
-    errors.confirmPassword = 'Must be 8 characters or more';
-  }
-
-
-  return errors;
-
-
- }
 
 const Register = () => {
-  const formik = useFormik({
-    initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-    },
-    validate,
-    onSubmit: values => {
-      console.log(JSON.stringify(values, null, 2))
-    }
-  })
+
+  const TextInput = ({ label, ...props }) => {
+    const [field, meta] = useField(props);
+    return (
+      <div className="mb-4">
+        <label className="block text-sm/6 font-medium text-gray-900 pb-1" htmlFor={props.id || props.name}>{label}</label>
+        <input className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-600 sm:text-sm/6" {...field} {...props} />
+        {meta.touched && meta.error ? (
+          <div className="text-red-500 text-xs font-normal pt-1">{meta.error}</div>
+        ) : null}
+      </div>
+    );
+  };
+
   return (
+
      <>
       <div className="flex flex-1 flex-col justify-center px-6 py-12 max-h-screen h-full lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm shadow-xl rounded-2xl p-6 bg-[rgba(252, 185, 162, 0.15)]">
@@ -69,75 +32,47 @@ const Register = () => {
           </div>
 
           <div className="">
-            <form className="space-y-6" onSubmit={formik.handleSubmit}>
-              <label htmlFor="firstName" className="block text-sm/6 font-medium text-gray-900">Name</label>
-              <input
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-600 sm:text-sm/6"
-                id="firstName"
-                name="firstName"
-                type="text"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.firstName}
-              />
-              {formik.touched.firstName && formik.errors.firstName ? <div>{formik.errors.firstName}</div> : null}
+            <Formik
+              initialValues={{ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }}
+              validationSchema={Yup.object({
+                firstName: Yup.string()
+                  .max(15, 'Must be 15 characters or less')
+                  .required('First Name is required'),
+                lastName: Yup.string()
+                  .max(20, 'Must be 20 characters or less')
+                  .required('Last Name is required'),
+                email: Yup.string().email('Invalid email address').required('Email is required'),
+                password: Yup.string()
+                  .min(8, 'Must be 8 characters or more')
+                  .required('Password is required'),
+                confirmPassword: Yup.string()
+                  .min(8, 'Must be 8 characters or more')
+                  .oneOf([Yup.ref('password'), null], 'Passwords no match')
+                  .required('Confirm password is required'),
+              })}
+              onSubmit={(values, { setSubmitting }) => {
+                setTimeout(() => {
+                  console.log(JSON.stringify(values, null, 2));
+                  setSubmitting(true);
+                }, 400);
+              }}
+            >
 
-              <label htmlFor="lastName" className="block text-sm/6 font-medium text-gray-900">Lastname</label>
-              <input
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-600 sm:text-sm/6"
-                id="lastName"
-                name="lastName"
-                type="text"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.lastName}
-              />
-              {formik.touched.lastName && formik.errors.lastName ? <div>{formik.errors.lastName}</div> : null}
+              <Form>
+                <TextInput label="First Name" name="firstName" type="text" />
+                <TextInput label="Last Name" name="lastName" type="text" />
+                <TextInput label="E-mail Address" name="email" type="email" />
+                <TextInput label="Password" name="password" type="password" />
+                <TextInput label="Confirm Password" name="confirmPassword" type="password" />
 
-              <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">E-mail Address</label>
-              <input
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-600 sm:text-sm/6"
-                id="email"
-                name="email"
-                type="email"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-              />
-              {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
-
-              <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">Password</label>
-              <input
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-600 sm:text-sm/6"
-                id="password"
-                name="password"
-                type="password"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-              />
-              {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : null}
-
-              <label htmlFor="confirmPassword" className="block text-sm/6 font-medium text-gray-900">Confirm Password</label>
-              <input
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-600 sm:text-sm/6"
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.confirmPassword}
-              />
-              {formik.touched.confirmPassword && formik.errors.confirmPassword ? <div>{formik.errors.confirmPassword}</div> : null}
-
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-orange-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
-              >
-                Register
-              </button>
-
-            </form>
+                <button
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-orange-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 mt-8"
+                >
+                  Register
+                </button>
+              </Form>
+            </Formik>
             <p className="mt-10 text-center text-sm/6 text-gray-500">
               If you already have an account? {' '}
               <NavLink to="/login" className="font-semibold text-orange-600 hover:text-orange-500">Sign In</NavLink>
