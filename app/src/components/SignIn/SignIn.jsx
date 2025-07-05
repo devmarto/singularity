@@ -2,6 +2,8 @@ import Logo from "../Logo/Logo";
 import { NavLink } from "react-router";
 import { Formik, Form, useField } from "formik";
 import * as Yup from 'yup';
+import { useNavigate } from "react-router";
+
 
 const SignIn = () => {
 
@@ -18,6 +20,7 @@ const SignIn = () => {
       );
     };
 
+  let navigate = useNavigate();
   return (
      <>
       <div className="flex flex-1 flex-col justify-center px-6 py-12 max-h-screen h-full lg:px-8">
@@ -40,6 +43,22 @@ const SignIn = () => {
               })}
               onSubmit={(values, { setSubmitting }) => {
                 setTimeout(() => {
+                    fetch ('http://localhost:3000/login', {
+                      method: 'post',
+                      headers: {'Content-Type': 'application/json'},
+                      body: JSON.stringify({
+                        email: values.email,
+                        password: values.password
+                      })
+                    })
+                      .then(response => response.json())
+                      .then(data => {
+                        if(data === 'success')  {
+                          navigate('/');
+                        } else {
+                          console.log('Error')
+                        }
+                      })
                   console.log(JSON.stringify(values, null, 2));
                   setSubmitting(true);
                 }, 400);

@@ -13,6 +13,24 @@ function App() {
   const [url, setUrl] = useState('');
   const [image, setImage] = useState()
   const [boxes, setBoxes] = useState([]);
+  const [user, setUser] = useState({
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: '',
+  })
+
+  const loadUser = (data) => {
+    setUser({
+      id: data.id,
+      name:data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined,
+    })
+  }
+
   const MODEL_ID = 'face-detection';
 
   const returnClarifaiRequestOptions = (imageUrl) => {
@@ -81,15 +99,29 @@ function App() {
     }
   }
 
-  function handleClick() {
+  function onImageSubmit() {
     setImage(url)
     fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", returnClarifaiRequestOptions(url))
       .then(response => response.json())
       .then(response => {
+        if (response) {
+          fetch ('http://localhost:3000/image', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              id: user.id,
+            })
+          })
+            .then(response => response.json())
+            .then(count => {
+                setUser(Object.assign(user, {entries: count}))
+            })
+        }
         calculateFaceLocation(response);
       })
       .catch(err => console.log(err));
   }
+  console.log('entries:', user.entries)
 
   return (
     <>
@@ -98,14 +130,14 @@ function App() {
           <>
             <Navigation />
             <div className="flex flex-col justify-center items-center">
-              <Rank />
-              <ImageLinkForm inputChange={handleInput} submitClick={handleClick}/>
+              <Rank name={user.name} entries={user.entries}/>
+              <ImageLinkForm inputChange={handleInput} submitClick={onImageSubmit}/>
               <FaceRecognition boxes={boxes} image={image}/>
             </div>
           </>
         } />
         <Route path="/login" element={<SignIn />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<Register loadUser={loadUser} />} />
       </Routes>
     </>
   )
