@@ -2,9 +2,10 @@ import Logo from "../Logo/Logo";
 import { NavLink } from "react-router";
 import { Formik, Form, useField } from "formik";
 import * as Yup from 'yup';
+import { useNavigate } from "react-router";
 
 
-const Register = () => {
+const Register = ({loadUser}) => {
 
   const TextInput = ({ label, ...props }) => {
     const [field, meta] = useField(props);
@@ -19,6 +20,7 @@ const Register = () => {
     );
   };
 
+  let navigate = useNavigate();
   return (
 
      <>
@@ -52,6 +54,26 @@ const Register = () => {
               })}
               onSubmit={(values, { setSubmitting }) => {
                 setTimeout(() => {
+                  fetch ('http://localhost:3000/register', {
+                      method: 'post',
+                      headers: {'Content-Type': 'application/json'},
+                      body: JSON.stringify({
+                        name: values.firstName,
+                        lastName: values.lastName,
+                        email: values.email,
+                        password: values.password,
+                        confirmPassword: values.confirmPassword
+                      })
+                    })
+                      .then(response => response.json())
+                      .then(data => {
+                        if(data)  {
+                          loadUser(data);
+                          navigate('/login');
+                        } else {
+                          console.log('Error')
+                        }
+                      })
                   console.log(JSON.stringify(values, null, 2));
                   setSubmitting(true);
                 }, 400);
