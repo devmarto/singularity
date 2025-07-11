@@ -10,6 +10,12 @@ body {
   font-family: "Ubuntu", sans-serif;
 }
 
+.Toastify__toast {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300;
+  /* color: #333; */
+}
+
 #root {
   height: 100vh;
 }

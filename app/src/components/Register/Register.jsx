@@ -3,6 +3,7 @@ import { NavLink } from "react-router";
 import { Formik, Form, useField } from "formik";
 import * as Yup from 'yup';
 import { useNavigate } from "react-router";
+import { toast } from 'react-toastify';
 
 
 const Register = ({loadUser}) => {
@@ -66,15 +67,16 @@ const Register = ({loadUser}) => {
                       })
                     })
                       .then(response => response.json())
-                      .then(data => {
-                        if(data)  {
-                          loadUser(data);
+                      .then(user => {
+                        if(user && user.id)  {
+                          loadUser(user);
                           navigate('/login');
+                        } else if (user && user.error) {
+                          toast.error('Error registering. Please try again.');
                         } else {
-                          console.log('Error')
+                          toast.error('Error registering. Please try again.');
                         }
                       })
-                  console.log(JSON.stringify(values, null, 2));
                   setSubmitting(true);
                 }, 400);
               }}

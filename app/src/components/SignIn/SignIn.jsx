@@ -3,9 +3,10 @@ import { NavLink } from "react-router";
 import { Formik, Form, useField } from "formik";
 import * as Yup from 'yup';
 import { useNavigate } from "react-router";
+import { toast } from 'react-toastify';
 
 
-const SignIn = () => {
+const SignIn = ({ loadUser }) => {
 
   const TextInput = ({ label, ...props }) => {
       const [field, meta] = useField(props);
@@ -52,14 +53,20 @@ const SignIn = () => {
                       })
                     })
                       .then(response => response.json())
-                      .then(data => {
-                        if(data === 'success')  {
+                      .then(user => {
+                        console.log('SignIn: ', user)
+                        if(user && user.id) {
+                          loadUser(user);
                           navigate('/');
                         } else {
-                          console.log('Error')
+                          toast.error('Incorrect email or password. Please try again.');
                         }
                       })
-                  console.log(JSON.stringify(values, null, 2));
+                      .catch(error => {
+                        console.error('Erro no login:', error);
+                        toast.error('Error logging in. Please try again.');
+                      })
+                  //console.log('SignIn: ', JSON.stringify(values, null, 2));
                   setSubmitting(true);
                 }, 400);
               }}
@@ -76,23 +83,6 @@ const SignIn = () => {
                 </button>
               </Form>
             </Formik>
-            {/* <form onSubmit={formik.handleSubmit}>
-              <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">Email Address</label>
-              <input
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-600 sm:text-sm/6"
-                id="email"
-                name="email"
-                type="email"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-              />
-              <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-orange-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
-                >
-                  Sign In
-                </button>
-            </form> */}
             <p className="mt-10 text-center text-sm/6 text-gray-500">
               Not a member?{' '}
               <NavLink to="/register" className="font-semibold text-orange-600 hover:text-orange-500">Create an Account</NavLink>

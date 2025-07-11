@@ -7,6 +7,8 @@ import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import SignIn from "./components/SignIn/SignIn";
 import { Routes, Route } from "react-router";
 import Register from "./components/Register/Register";
+import { ToastContainer } from 'react-toastify';
+
 
 
 function App() {
@@ -21,13 +23,13 @@ function App() {
     joined: '',
   })
 
-  const loadUser = (data) => {
+  const loadUser = (user) => {
     setUser({
-      id: data.id,
-      name:data.name,
-      email: data.email,
-      entries: data.entries,
-      joined: data.joined,
+      id: user.id,
+      name:user.name,
+      email: user.email,
+      entries: user.entries,
+      joined: user.joined,
     })
   }
 
@@ -121,7 +123,7 @@ function App() {
       })
       .catch(err => console.log(err));
   }
-  console.log('entries:', user.entries)
+
 
   return (
     <>
@@ -136,9 +138,21 @@ function App() {
             </div>
           </>
         } />
-        <Route path="/login" element={<SignIn />} />
+        <Route path="/login" element={<SignIn loadUser={loadUser}/>} />
         <Route path="/register" element={<Register loadUser={loadUser} />} />
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   )
 }
