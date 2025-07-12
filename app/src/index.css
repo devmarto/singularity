@@ -4,9 +4,9 @@
 @tailwind utilities;
 
 body {
-  background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+  /* background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover; */
   font-family: "Ubuntu", sans-serif;
 }
 
