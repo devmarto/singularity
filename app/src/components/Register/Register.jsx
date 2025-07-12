@@ -41,7 +41,7 @@ const Register = ({loadUser}) => {
       <div className="mb-4 w-full relative">
         <label className="block text-base font-bold text-gray-900 pb-1 mb-2" htmlFor={props.id || props.name}>{label}</label>
         <input className="block w-full h-[44px] rounded-lg bg-neutral-100 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-600 sm:text-sm/6" {...field} {...props} type={type} />
-        <span class="flex justify-around items-center absolute top-[65%] left-[92%]" onClick={handleShowPass}>
+        <span className="flex justify-around items-center absolute top-[65%] left-[92%]" onClick={handleShowPass}>
             {showPassIcon}
         </span>
         {meta.touched && meta.error ? (
@@ -51,13 +51,29 @@ const Register = ({loadUser}) => {
     )
   }
 
+  const CheckTerms = ({ children, ...props }) => {
+   const [field, meta] = useField({ ...props, type: 'checkbox' });
+   return (
+     <div className="control-group">
+       <label className="control control-checkbox">
+         <input type="checkbox" {...field} {...props} />
+         <div class="control_indicator"></div>
+         {children}
+       </label>
+       {meta.touched && meta.error ? (
+         <div className="text-red-500 text-xs font-normal pt-1">{meta.error}</div>
+       ) : null}
+     </div>
+   );
+ };
+
   let navigate = useNavigate();
   return (
      <>
       <div className="flex flex-1 flex-col justify-center px-6 py-12 max-h-screen h-full lg:px-8">
         <div className="max-w-full w-[475px] mx-auto">
           <div className="text-center mb-10">
-            <h2 className="mt-10 text-center text-4xl font-bold tracking-tight text-gray-900">
+            <h2 className="mt-5 text-center text-4xl font-bold tracking-tight text-gray-900">
               Register Now!
             </h2>
             <p className="text-xl font-light mt-4">Register now to start your journey!</p>
@@ -65,7 +81,15 @@ const Register = ({loadUser}) => {
 
           <div className="">
             <Formik
-              initialValues={{ firstName: '', lastname: '', phone: '', email: '', password: '', confirmPassword: '' }}
+              initialValues={{
+                firstName: '',
+                lastname: '',
+                phone: '',
+                email: '',
+                password: '',
+                confirmPassword: '',
+                acceptedTerms: false,
+              }}
               validationSchema={Yup.object({
                 firstName: Yup.string()
                   .max(15, 'Must be 15 characters or less')
@@ -84,6 +108,9 @@ const Register = ({loadUser}) => {
                   .min(8, 'Must be 8 characters or more')
                   .oneOf([Yup.ref('password'), null], 'Passwords no match')
                   .required('Confirm password is required'),
+                acceptedTerms: Yup.boolean()
+                  .required('Required')
+                  .oneOf([true], 'You must accept the terms and conditions.'),
               })}
               onSubmit={(values, { setSubmitting }) => {
                 setTimeout(() => {
@@ -125,7 +152,9 @@ const Register = ({loadUser}) => {
                 <TextInput label="Phone" name="phone" type="text" />
                 <PassInput label="Password" name="password" />
                 <PassInput label="Confirm Password" name="confirmPassword" />
-
+                <CheckTerms name="acceptedTerms">
+                  <span>I agree to <span className="font-bold underline">Terms of Conditions</span> and <span className="font-bold underline">Privacy of Policy</span></span>
+                </CheckTerms>
                 <button
                   type="submit"
                   className="flex w-full justify-center items-center gap-4 rounded-md bg-orange-600 p-3 text-base font-semibold text-white shadow-xs hover:bg-orange-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 mt-8"
@@ -135,9 +164,9 @@ const Register = ({loadUser}) => {
                 </button>
               </Form>
             </Formik>
-            <p className="mt-10 text-center text-sm/6 text-gray-500">
+            <p className="mt-5 text-center text-sm/6 text-gray-500">
               If you already have an account? {' '}
-              <NavLink to="/login" className="font-semibold text-orange-600 hover:text-orange-500">Sign In</NavLink>
+              <NavLink to="/login" className="font-semibold text-orange-600 hover:text-orange-500 underline">Sign In</NavLink>
             </p>
           </div>
         </div>
