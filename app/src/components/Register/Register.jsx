@@ -91,7 +91,7 @@ const Register = ({loadUser}) => {
                 email: '',
                 password: '',
                 confirmPassword: '',
-                acceptedTerms: false,
+                acceptedterms: false,
               }}
               validationSchema={Yup.object({
                 firstName: Yup.string()
@@ -111,7 +111,7 @@ const Register = ({loadUser}) => {
                   .min(8, 'Must be 8 characters or more')
                   .oneOf([Yup.ref('password'), null], 'Passwords no match')
                   .required('Confirm password is required'),
-                acceptedTerms: Yup.boolean()
+                acceptedterms: Yup.boolean()
                   .required('Required')
                   .oneOf([true], 'You must accept the terms and conditions.'),
               })}
@@ -126,7 +126,8 @@ const Register = ({loadUser}) => {
                         phone: values.phone,
                         email: values.email,
                         password: values.password,
-                        confirmPassword: values.confirmPassword
+                        confirmPassword: values.confirmPassword,
+                        acceptedterms: values.acceptedterms
                       })
                     })
                       .then(response => response.json())
@@ -155,7 +156,7 @@ const Register = ({loadUser}) => {
                 <TextInput label="Phone" name="phone" type="text" />
                 <PassInput label="Password" name="password" />
                 <PassInput label="Confirm Password" name="confirmPassword" />
-                <CheckTerms name="acceptedTerms">
+                <CheckTerms name="acceptedterms">
                   <span>I read and agree to <span className="font-bold underline" onClick={() => setTerms(true)}>Terms of Conditions</span></span>
                 </CheckTerms>
                 <button
