@@ -192,6 +192,7 @@ const Register = ({loadUser}) => {
                         console.log(user);
                         if(user && user.id)  {
                           loadUser(user);
+                          toast.success('Registration successful. Log in.');
                           navigate('/login');
                         } else if (user && user.error) {
                           toast.error('Error registering. Please try again.');
