@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import Navigation from "./components/Navigation/Navigation"
-import Rank from "./components/Rank/Rank";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import SignIn from "./components/SignIn/SignIn";
@@ -131,9 +130,8 @@ function App() {
       <Routes>
         <Route path="/" element={
           <>
-            <Navigation />
+            <Navigation name={user.name} entries={user.entries}/>
             <div className="flex flex-col justify-center items-center">
-              <Rank name={user.name} entries={user.entries}/>
               <ImageLinkForm inputChange={handleInput} submitClick={onImageSubmit}/>
               <FaceRecognition boxes={boxes} image={image}/>
             </div>

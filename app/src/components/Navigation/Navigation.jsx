@@ -16,10 +16,10 @@ function classNames(...classes) {
 }
 
 
-const Navigation = () => {
+const Navigation = ({ name, entries }) => {
   return (
     <Disclosure as="nav" className="bg-orange-600">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 lg:mb-40">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 lg:mb-24">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             {/* Mobile menu button*/}
@@ -71,10 +71,12 @@ const Navigation = () => {
                 transition
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
               >
+                <p className="block px-4 py-2 text-sm border-b-2">Hi, {name}</p>
+
                 <MenuItem>
                   <a
                     href="#"
-                    className="block px-4 py-2 text-sm text-orange-700 data-focus:bg-orange-100 data-focus:outline-hidden"
+                    className="block px-4 py-2 text-sm text-gray-900 hover:text-gray-500 data-focus:bg-orange-100 data-focus:outline-hidden"
                   >
                     Your Profile
                   </a>
@@ -82,7 +84,7 @@ const Navigation = () => {
                 <MenuItem>
                   <a
                     href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                    className="block px-4 py-2 text-sm text-gray-900 hover:text-gray-500 data-focus:bg-gray-100 data-focus:outline-hidden"
                   >
                     Settings
                   </a>
@@ -90,7 +92,7 @@ const Navigation = () => {
                 <MenuItem>
                   <a
                     href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                    className="block px-4 py-2 text-sm text-gray-900 hover:text-gray-500 data-focus:bg-gray-100 data-focus:outline-hidden"
                   >
                     Sign out
                   </a>
@@ -105,7 +107,7 @@ const Navigation = () => {
               <span className="sr-only">View notifications</span>
               <div className="flex items-center gap-1">
                 <TbCoin size={20} />
-                <p>25</p>
+                <p>{entries}</p>
               </div>
             </button>
           </div>
