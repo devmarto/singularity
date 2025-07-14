@@ -139,15 +139,22 @@ function App() {
             </div>
           </>
         } />
-        {/* <Route path="/auth" element={<Auth oadUser={loadUser}/>} /> */}
         <Route path="/login" element={
-            <Auth>
+            <Auth
+              title="Welcome Back!"
+              primaryDescription="Continue your journey into the future of identity."
+              secondaryDescription="Sign in to access your account and use the power of AI for instant, reliable, and personalized recognition."
+            >
               <SignIn loadUser={loadUser}/>
             </Auth>
           }
         />
         <Route path="/register" element={
-            <Auth>
+            <Auth
+              title="Create Your Account Now!"
+              primaryDescription="Join us to experience the future of identity."
+              secondaryDescription="Create an account to harness the power of AI for instant, reliable, and personalized recognition."
+            >
               <Register loadUser={loadUser} />
             </Auth>
           }
