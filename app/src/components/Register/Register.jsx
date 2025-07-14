@@ -7,6 +7,9 @@ import { toast } from 'react-toastify';
 import { FaArrowRightLong } from "react-icons/fa6";
 import { RiEyeCloseLine, RiEyeLine, RiCloseLargeLine } from "react-icons/ri";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
 
 const Register = ({loadUser}) => {
@@ -68,6 +71,51 @@ const Register = ({loadUser}) => {
    );
  };
 
+ const PhoneInputField = ({ label, ...props }) => {
+   const [field, meta, helpers] = useField(props);
+   
+   // Função para validar o número de telefone
+   const validatePhone = (phone) => {
+     if (!phone) return true; // Permite vazio se não for required
+     
+     try {
+       const phoneUtil = PhoneNumberUtil.getInstance();
+       const parsedPhone = phoneUtil.parseAndKeepRawInput(phone);
+       return phoneUtil.isValidNumber(parsedPhone);
+     } catch {
+       return false;
+     }
+   };
+
+   const handlePhoneChange = (phone) => {
+     helpers.setValue(phone);
+     
+     // Validar o número em tempo real
+     if (phone && !validatePhone(phone)) {
+       helpers.setError('Invalid phone number');
+     } else {
+       helpers.setError(undefined);
+     }
+   };
+   
+   return (
+     <div className="mb-4 w-full">
+       <label className="block text-base font-bold text-gray-900 pb-1 mb-2" htmlFor={props.name}>{label}</label>
+       <PhoneInput
+         {...props}
+         value={field.value}
+         onChange={handlePhoneChange}
+         onBlur={() => helpers.setTouched(true)}
+         className="block w-full h-[44px] rounded-lg bg-neutral-100 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-600 sm:text-sm/6"
+         defaultCountry="us"
+       />
+       {meta.touched && meta.error ? (
+         <div className="text-red-500 text-xs font-normal pt-1">{meta.error}</div>
+       ) : null}
+     </div>
+   );
+ };
+
  const [terms, setTerms] = useState(false);
 
   let navigate = useNavigate();
@@ -101,8 +149,17 @@ const Register = ({loadUser}) => {
                   .max(20, 'Must be 20 characters or less')
                   .required('Last Name is required'),
                 phone: Yup.string()
-                  .max(20, 'Must be 20 characters or less')
-                  .required('Phone is required'),
+                  .required('Phone is required')
+                  .test('is-valid-phone', 'Invalid phone number', function(value) {
+                    if (!value) return false;
+                    try {
+                      const phoneUtil = PhoneNumberUtil.getInstance();
+                      const parsedPhone = phoneUtil.parseAndKeepRawInput(value);
+                      return phoneUtil.isValidNumber(parsedPhone);
+                    } catch {
+                      return false;
+                    }
+                  }),
                 email: Yup.string().email('Invalid email address').required('Email is required'),
                 password: Yup.string()
                   .min(8, 'Must be 8 characters or more')
@@ -153,7 +210,7 @@ const Register = ({loadUser}) => {
                   <TextInput label="Last Name" name="lastname" type="text" />
                 </div>
                 <TextInput label="E-mail" name="email" type="email" />
-                <TextInput label="Phone" name="phone" type="text" />
+                <PhoneInputField label="Phone" name="phone" />
                 <PassInput label="Password" name="password" />
                 <PassInput label="Confirm Password" name="confirmPassword" />
                 <CheckTerms name="acceptedterms">

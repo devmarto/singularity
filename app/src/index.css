@@ -105,3 +105,9 @@ body {
   z-index: 99999;
   transform: scale(0);
 }
+
+.react-international-phone-country-selector-button, .react-international-phone-input{
+  font-family: "Ubuntu", sans-serif!important;
+  background-color: transparent!important;
+  border: none!important;
+}
