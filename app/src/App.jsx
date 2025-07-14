@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router";
 import Register from "./components/Register/Register";
 import { ToastContainer } from 'react-toastify';
 import Auth from "./components/templates/Auth/Auth";
+import Usage from "./components/Usage/Usage";
 
 
 
@@ -137,6 +138,14 @@ function App() {
             </div>
           </>
         } />
+        <Route path="/usage" element={
+          <>
+            <Navigation name={user.name} entries={user.entries}/>
+            <Usage entries={user.entries}/>
+          </>
+        }>
+
+        </Route>
         <Route path="/login" element={
             <Auth
               title="Welcome Back!"
