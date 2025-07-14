@@ -2,7 +2,7 @@ import LogoDark from "../../LogoDark/LogoDark";
 import Register from "../../Register/Register";
 import facialRecognitionImg from "./facial-recognition.jpg";
 
-const Auth = ({children}) => {
+const Auth = ({ children, title, primaryDescription, secondaryDescription}) => {
   return (
     <div className="flex flex-col lg:flex-row">
       <div 
@@ -10,11 +10,11 @@ const Auth = ({children}) => {
         style={{ backgroundImage: `url(${facialRecognitionImg})` }}
       >
         <div className="text-white p-10 h-full flex flex-col justify-between">
-          <LogoDark align={'h-20 w-16'}/>
+          <LogoDark align={'h-[96px] w-[72px]'}/>
           <div>
-            <h1 className="text-4xl mb-4 font-bold">Create Your Account Now!</h1>
-            <p className="text-xl font-light">Join us to experience the future of identity.</p>
-            <p className="text-xl font-light">Create an account to harness the power of AI for instant, reliable, and personalized recognition.</p>
+            <h1 className="text-4xl mb-4 font-bold">{title}</h1>
+            <p className="text-xl font-light">{primaryDescription}</p>
+            <p className="text-xl font-light">{secondaryDescription}</p>
           </div>
         </div>
       </div>

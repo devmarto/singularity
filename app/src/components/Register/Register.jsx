@@ -73,11 +73,8 @@ const Register = ({loadUser}) => {
 
  const PhoneInputField = ({ label, ...props }) => {
    const [field, meta, helpers] = useField(props);
-   
-   // Função para validar o número de telefone
    const validatePhone = (phone) => {
-     if (!phone) return true; // Permite vazio se não for required
-     
+     if (!phone) return true;
      try {
        const phoneUtil = PhoneNumberUtil.getInstance();
        const parsedPhone = phoneUtil.parseAndKeepRawInput(phone);
@@ -89,8 +86,6 @@ const Register = ({loadUser}) => {
 
    const handlePhoneChange = (phone) => {
      helpers.setValue(phone);
-     
-     // Validar o número em tempo real
      if (phone && !validatePhone(phone)) {
        helpers.setError('Invalid phone number');
      } else {
