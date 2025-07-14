@@ -8,6 +8,7 @@ import SignIn from "./components/SignIn/SignIn";
 import { Routes, Route } from "react-router";
 import Register from "./components/Register/Register";
 import { ToastContainer } from 'react-toastify';
+import Auth from "./components/templates/Auth/Auth";
 
 
 
@@ -138,8 +139,19 @@ function App() {
             </div>
           </>
         } />
-        <Route path="/login" element={<SignIn loadUser={loadUser}/>} />
-        <Route path="/register" element={<Register loadUser={loadUser} />} />
+        {/* <Route path="/auth" element={<Auth oadUser={loadUser}/>} /> */}
+        <Route path="/login" element={
+            <Auth>
+              <SignIn loadUser={loadUser}/>
+            </Auth>
+          }
+        />
+        <Route path="/register" element={
+            <Auth>
+              <Register loadUser={loadUser} />
+            </Auth>
+          }
+        />
       </Routes>
       <ToastContainer
         position="top-right"
