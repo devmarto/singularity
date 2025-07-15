@@ -169,7 +169,7 @@ const Register = ({loadUser}) => {
               })}
               onSubmit={(values, { setSubmitting }) => {
                 setTimeout(() => {
-                  fetch ('http://localhost:3000/register', {
+                  fetch ('https://singularity-api.onrender.com/register', {
                       method: 'post',
                       headers: {'Content-Type': 'application/json'},
                       body: JSON.stringify({

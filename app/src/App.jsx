@@ -109,7 +109,7 @@ function App() {
       .then(response => response.json())
       .then(response => {
         if (response) {
-          fetch ('http://localhost:3000/image', {
+          fetch ('https://singularity-api.onrender.com/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
