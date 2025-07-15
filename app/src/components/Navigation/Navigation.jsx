@@ -127,8 +127,8 @@ const Navigation = ({ name, entries, onSignOut }) => {
           {navigation.map((item) => (
             <DisclosureButton
               key={item.name}
-              as="a"
-              href={item.href}
+              as={NavLink}
+              to={item.href}
               aria-current={item.current ? 'page' : undefined}
               className={classNames(
                 item.current ? 'bg-orange-900 text-white' : 'text-white hover:bg-orange-700 hover:text-white',

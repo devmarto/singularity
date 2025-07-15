@@ -1,6 +1,6 @@
 const ImageLinkForm = ({ inputChange, submitClick }) => {
   return (
-    <div className="container pt-12 pb-6">
+    <div className="container pt-12 pb-6 px-8 lg:px-0">
       <h1 className="text-4xl font-semibold text-center mb-2">Unleash our Vision Singularity. </h1>
       <p className='text-center'>
         {'Instantly detect the faces in your pictures. Git it a try.'}

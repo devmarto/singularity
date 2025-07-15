@@ -42,7 +42,7 @@ const Plans = () => {
           className="mx-auto aspect-1155/678 w-288.75 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
         />
       </div>
-      <div className="mx-auto max-w-4xl text-center">
+      <div className="mx-auto max-w-4xl text-center mt-12 lg:mt-0">
         <h2 className="text-base/7 font-semibold text-orange-600">Pricing</h2>
         <p className="mt-2 text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-4xl">
           Choose the right plan for you
