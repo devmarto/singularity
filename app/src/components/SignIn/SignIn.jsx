@@ -82,7 +82,6 @@ const SignIn = ({ loadUser }) => {
                     })
                       .then(response => response.json())
                       .then(user => {
-                        console.log('SignIn: ', user)
                         if(user && user.id) {
                           loadUser(user);
                           navigate('/');
