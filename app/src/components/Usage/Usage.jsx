@@ -267,8 +267,8 @@ const usages = [
 
 const Usage = ({ entries }) => {
   return (
-    <div className="container">
-      <div className="mb-12">
+    <div className="container px-8 lg:px-0">
+      <div className="mb-12 mt-12 lg:mt-0">
         <h1 className="text-4xl font-semibold text-center mb-2">Usage</h1>
         <p className='text-center text-lg font-light text-pretty text-gray-600 sm:text-xl/8'>
           Total entries: {entries} / 50
