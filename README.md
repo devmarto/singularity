@@ -1,6 +1,6 @@
 # Singularity - AI-Powered Face Detection Platform
 
-![Singularity Banner](https://i.ibb.co/W4m60x7B/banner-singularity.png)
+![Singularity Banner](https://via.placeholder.com/800x300/EA580C/FFFFFF?text=SINGULARITY+AI+FACE+DETECTION)
 
 **Singularity** is a modern web-based face detection platform built with React and powered by Clarifai's advanced AI models. The application provides a seamless experience for detecting and analyzing faces in images with enterprise-grade accuracy and performance.
 
