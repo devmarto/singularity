@@ -17,6 +17,7 @@ function classNames(...classes) {
 
 
 const Navigation = ({ name, entries }) => {
+
   return (
     <Disclosure as="nav" className="bg-orange-600">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 lg:mb-24">
@@ -60,11 +61,14 @@ const Navigation = ({ name, entries }) => {
                 <MenuButton className="relative flex rounded-full bg-orange-800 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
-                  <img
+                  {/* <img
                     alt=""
                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                     className="size-8 rounded-full"
-                  />
+                  /> */}
+                  <div className="bg-slate-50 rounded-full h-[40px] w-[40px] flex items-center justify-center" >
+                    <p className="text-2xl font-light">{name[0]}</p>
+                  </div>
                 </MenuButton>
               </div>
               <MenuItems
