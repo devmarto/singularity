@@ -9,6 +9,7 @@ import Register from "./components/Register/Register";
 import { ToastContainer } from 'react-toastify';
 import Auth from "./components/templates/Auth/Auth";
 import Usage from "./components/Usage/Usage";
+import Plans from "./components/Plans/Plans";
 
 
 
@@ -143,9 +144,13 @@ function App() {
             <Navigation name={user.name} entries={user.entries}/>
             <Usage entries={user.entries}/>
           </>
-        }>
-
-        </Route>
+        }/>
+        <Route path="/plans" element={
+          <>
+            <Navigation name={user.name} entries={user.entries}/>
+            <Plans />
+          </>
+        }/>
         <Route path="/login" element={
             <Auth
               title="Welcome Back!"

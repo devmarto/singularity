@@ -270,11 +270,11 @@ const Usage = ({ entries }) => {
     <div className="container">
       <div className="mb-12">
         <h1 className="text-4xl font-semibold text-center mb-2">Usage</h1>
-        <p className='text-center'>
+        <p className='text-center text-lg font-light text-pretty text-gray-600 sm:text-xl/8'>
           Total entries: {entries} / 50
         </p>
       </div>
-      <ul role="list" className="divide-y divide-gray-100 p-4 border-1 border-solid rounded-2xl">
+      <ul role="list" className="divide-y divide-gray-100 p-4 border border-gray-100 border-solid rounded-2xl">
         {usages.map((usage) => (
           <li key={usage.url} className="flex justify-between gap-x-6 py-5">
             <div className="flex min-w-0 gap-x-4">
