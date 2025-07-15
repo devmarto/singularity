@@ -1,22 +1,33 @@
 import Logo from "../Logo/Logo";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
 import { TbCoin } from "react-icons/tb";
 
 
-const navigation = [
-  { name: 'Home', href: '/', current: true },
-  { name: 'Usage', href: '/usage', current: false },
-  { name: 'Plans', href: '/plans', current: false },
-]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 
-const Navigation = ({ name, entries }) => {
+const Navigation = ({ name, entries, onSignOut }) => {
+
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    if (onSignOut) {
+      onSignOut();
+    }
+    navigate('/login');
+  };
+
+
+ const navigation = [
+    { name: 'Home', href: '/' },
+    { name: 'Usage', href: '/usage' },
+    { name: 'Plans', href: '/plans' },
+  ]
 
   return (
     <Disclosure as="nav" className="bg-orange-600">
@@ -26,7 +37,7 @@ const Navigation = ({ name, entries }) => {
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-orange-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset">
               <span className="absolute -inset-0.5" />
               <span className="sr-only">Open main menu</span>
-              <IoMenuOutline aria-hidden="true" className="block size-6 group-data-open:hidden" />
+              <IoMenuOutline aria-hidden="currentItem" className="block size-6 group-data-open:hidden" />
               <IoCloseOutline aria-hidden="true" className="hidden size-6 group-data-open:block" />
             </DisclosureButton>
           </div>
@@ -39,17 +50,18 @@ const Navigation = ({ name, entries }) => {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <a
+                  <NavLink
                     key={item.name}
-                    href={item.href}
-                    aria-current={item.current ? 'page' : undefined}
-                    className={classNames(
-                      item.current ? 'bg-orange-900 text-white' : 'text-white hover:bg-orange-500 hover:text-white',
-                      'rounded-md px-3 py-2 text-sm font-medium',
-                    )}
+                    to={item.href}
+                    className={({ isActive }) =>
+                      classNames(
+                        isActive ? 'bg-orange-900 text-white' : 'text-white hover:bg-orange-500 hover:text-white',
+                        'rounded-md px-3 py-2 text-sm font-medium',
+                      )
+                    }
                   >
                     {item.name}
-                  </a>
+                  </NavLink>
                 ))}
               </div>
             </div>
@@ -72,28 +84,26 @@ const Navigation = ({ name, entries }) => {
                 <p className="block px-4 py-2 text-sm border-b-2">Hi, {name}</p>
 
                 <MenuItem>
-                  <a
-                    href="#"
+                  <button
                     className="block px-4 py-2 text-sm text-gray-900 hover:text-gray-500 data-focus:bg-orange-100 data-focus:outline-hidden"
                   >
                     Your Profile
-                  </a>
+                  </button>
                 </MenuItem>
                 <MenuItem>
-                  <a
-                    href="#"
+                  <button
                     className="block px-4 py-2 text-sm text-gray-900 hover:text-gray-500 data-focus:bg-gray-100 data-focus:outline-hidden"
                   >
                     Settings
-                  </a>
+                  </button>
                 </MenuItem>
                 <MenuItem>
-                  <a
-                    href="#"
+                  <button
+                    onClick={handleSignOut}
                     className="block px-4 py-2 text-sm text-gray-900 hover:text-gray-500 data-focus:bg-gray-100 data-focus:outline-hidden"
                   >
                     Sign out
-                  </a>
+                  </button>
                 </MenuItem>
               </MenuItems>
             </Menu>
@@ -131,18 +141,6 @@ const Navigation = ({ name, entries }) => {
         </div>
       </DisclosurePanel>
     </Disclosure>
-    // <nav className="container flex justify-between items-center py-4">
-    //   <NavLink to="/home">
-    //     <Logo align={'h-24'} />
-    //   </NavLink>
-    //   <div>
-    //     <ul>
-    //       <li>
-    //         <NavLink to="/login">Sign out</NavLink>
-    //       </li>
-    //     </ul>
-    //   </div>
-    // </nav>
   )
 }
 

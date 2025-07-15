@@ -4,13 +4,13 @@ import Navigation from "./components/Navigation/Navigation"
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import SignIn from "./components/SignIn/SignIn";
-import { Routes, Route } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 import Register from "./components/Register/Register";
 import { ToastContainer } from 'react-toastify';
 import Auth from "./components/templates/Auth/Auth";
 import Usage from "./components/Usage/Usage";
 import Plans from "./components/Plans/Plans";
-
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 
 function App() {
@@ -126,32 +126,45 @@ function App() {
       .catch(err => console.log(err));
   }
 
+  const handleSignOut = () => {
+    setUser({
+      id: '',
+      name: '',
+      email: '',
+      entries: 0,
+      joined: '',
+    });
+  };
+
 
   return (
     <>
       <Routes>
         <Route path="/" element={
-          <>
-            <Navigation name={user.name} entries={user.entries}/>
+          <ProtectedRoute user={user}>
+            <Navigation name={user.name} entries={user.entries} onSignOut={handleSignOut}/>
             <div className="flex flex-col justify-center items-center">
               <ImageLinkForm inputChange={handleInput} submitClick={onImageSubmit}/>
               <FaceRecognition boxes={boxes} image={image}/>
             </div>
-          </>
+          </ProtectedRoute>
         } />
         <Route path="/usage" element={
-          <>
-            <Navigation name={user.name} entries={user.entries}/>
+          <ProtectedRoute user={user}>
+            <Navigation name={user.name} entries={user.entries} onSignOut={handleSignOut}/>
             <Usage entries={user.entries}/>
-          </>
+          </ProtectedRoute>
         }/>
         <Route path="/plans" element={
-          <>
-            <Navigation name={user.name} entries={user.entries}/>
+          <ProtectedRoute user={user}>
+            <Navigation name={user.name} entries={user.entries} onSignOut={handleSignOut}/>
             <Plans />
-          </>
+          </ProtectedRoute>
         }/>
         <Route path="/login" element={
+          user.id ? (
+            <Navigate to="/" replace />
+          ) : (
             <Auth
               title="Welcome Back!"
               primaryDescription="Continue your journey into the future of identity."
@@ -159,16 +172,21 @@ function App() {
             >
               <SignIn loadUser={loadUser}/>
             </Auth>
+          )
           }
         />
         <Route path="/register" element={
-            <Auth
-              title="Create Your Account Now!"
-              primaryDescription="Join us to experience the future of identity."
-              secondaryDescription="Create an account to harness the power of AI for instant, reliable, and personalized recognition."
-            >
-              <Register loadUser={loadUser} />
-            </Auth>
+            user.id ? (
+              <Navigate to="/" replace />
+            ) : (
+              <Auth
+                title="Create Your Account Now!"
+                primaryDescription="Join us to experience the future of identity."
+                secondaryDescription="Create an account to harness the power of AI for instant, reliable, and personalized recognition."
+              >
+                <Register loadUser={loadUser} />
+              </Auth>
+            )
           }
         />
       </Routes>
